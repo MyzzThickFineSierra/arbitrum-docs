@@ -12,7 +12,7 @@ This section explains how to initiate a <a data-quicklook-from="arbitrum-rollup-
 
 ###### For those who prefer diving directly into coding without an extensive tutorial, we recommend exploring the "create-rollup-eth"  [example]( https://github.com/OffchainLabs/arbitrum-orbit-sdk/blob/main/examples/create-rollup-eth/index.ts) 
 
-The main benefit of our Orbit SDK is that it streamlines the deployment of Orbit chains' core contracts. 
+The main benefit of the Orbit SDK is that it streamlines the deployment of Orbit chains' core contracts. 
 
 Each Orbit chain requires a set of fundamental contracts to be deployed on its parent chain. This set includes:
 - Bridge contracts 
@@ -23,21 +23,21 @@ These contracts are the backbone of the Arbitrum <a data-quicklook-from="arbitru
 
 Beyond the deployment stage, the Orbit SDK also takes charge of the necessary initializations and configurations. This means that once the core contracts have been successfully deployed, the SDK facilitates their setup and fine-tuning, ensuring that your Orbit chain is up and running and optimized for performance and functionality.
 
-To streamline the deployment process and make it more efficient, we've developed a key smart contract called [`RollupCreator` contract](https://github.com/OffchainLabs/nitro-contracts/blob/main/src/rollup/RollupCreator.sol). This contract plays a vital role in setting up Orbit chains and has two primary functions:
+To streamline the deployment process and make it more efficient, we've developed a key smart contract called [`RollupCreator` contract](https://github.com/OffchainLabs/nitro-contracts/blob/main/src/rollup/RollupCreator.sol). This contract has two primary functions:
 
-1. `setTemplates`: This function is essential for maintaining the latest versions of each core contract, such as the Bridge contract. By using [setTemplates](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L63C14-L63C26), we can specify which versions of these contracts should be used in the deployment process. It ensures that every new Orbit chain is set up with the most up-to-date and efficient contracts available.
+1. setTemplates: Mintains the latest versions of each core contract, such as the Bridge contract. [setTemplates](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L63C14-L63C26) lets you specify which versions of these contracts should be used in the deployment process. It ensures that every new Orbit chain is set up with the most up-to-date and efficient contracts available.
 
-2. `createRollup`: The [`createRollup`](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L107) function is critical for deploying a new set of core contracts for a desired Orbit chain. It utilizes the templates set by the `setTemplates` function and initializes them based on the provided configurations. This function requires specific inputs from the chain deployer, which are crucial for customizing the deployment to meet the unique needs of each Orbit chain.
+2. createRollup: The [`createRollup`](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L107) deploys a new set of core contracts for a desired Orbit chain. It uses the templates set by the `setTemplates` function and initializes them based on the provided configurations. This function requires specific inputs from the chain deployer, which are crucial for customizing the deployment to meet the unique needs of each Orbit chain.
 
 These functionalities within the `RollupCreator` contract greatly simplify the deployment process, providing chain deployers with a smoother and more user-friendly experience. 
 
 In the following sections, we will discuss the inputs and configurations required for the `createRollup` function and how to use Orbit-SDK for chain deployment.
 
-<h3 id="rollup-deployment-parameter">Rollup Deployment Parameters Configuration</h3>
+### Rollup Deployment Parameters Configuration
 
 The `createRollup` function in the [`RollupCreator` contract](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L107) is a crucial component for deploying Orbit chains. It takes a complex input named `deployParams`, structured to encapsulate various configurable parameters customizing the Orbit chain. Let's break down the structure of these parameters:
 
-#### 1. `RollupDeploymentParams` Struct
+#### 1. RollupDeploymentParams Struct
 
    ```solidity
    struct RollupDeploymentParams {
@@ -50,9 +50,9 @@ The `createRollup` function in the [`RollupCreator` contract](https://github.com
        uint256 maxFeePerGasForRetryables;
    }
    ```
-This solidity `struct` includes key settings like the chain configuration (`Config`), validator addresses, maximum data size, the native token of the chain, and more.
+This Solidity `struct` includes key settings like the chain configuration (`Config`), validator addresses, maximum data size, the native token of the chain, and more.
 
-#### 2. `Config` Struct
+#### 2. Config Struct
 
    ```solidity
    struct Config {
@@ -72,7 +72,7 @@ This solidity `struct` includes key settings like the chain configuration (`Conf
 
 The `Config` `struct` defines the chain's core settings, including block confirmation periods, stake parameters, and the chain ID.
 
-#### 3. `MaxTimeVariation` Struct
+#### 3. MaxTimeVariation Struct
 
    ```solidity
    struct MaxTimeVariation {
@@ -84,7 +84,7 @@ The `Config` `struct` defines the chain's core settings, including block confirm
    ```
 This nested `struct` within `Config` specifies time variations related to block sequencing, providing control over block delay and future block settings.
 
-#### 4. `chainConfig`
+#### 4. chainConfig
 
 The `chainConfig` parameter within the `Config` `struct` is critical for customizing the Orbit chain. It's a stringified JSON object containing various configuration options that dictate how the Orbit chain behaves and interacts with the parent chain network. Here's a brief overview of the JSON structure:
 
@@ -171,7 +171,7 @@ In this section, we'll provide detailed explanations of the various chain config
 
 6. **`owner`**: This is the account address responsible for deploying, owning, and managing your Orbit chain's base contracts on its parent chain.
 
-7. **chainId**: This parameter sets the unique chain ID for your Orbit chain 
+7 j. **chainId**: This parameter sets the unique chain ID for your Orbit chain 
 
 :::note
 
@@ -206,7 +206,7 @@ The Orbit SDK provides two essential APIs, `createRollupPrepareConfig` and `crea
 
    This API accepts parameters defined in the `RollupDeploymentParams` structure, applying defaults where necessary, and constructs the `RollupDeploymentParams`. This structure is then used to create a raw transaction which calls the `createRollup` function of the `RollupCreator` contract. As discussed in previous sections, this function deploys and initializes all core Orbit contracts.
 
-   For instance, to deploy using the Orbit SDK with a Config equal to `config`, a batchPoster, and a set of validators such as `[validator]`, the process would look like this:
+   For instance, to deploy using the Orbit SDK with a Config equal to `config`, a `batchPoster`, and a set of validators such as `[validator]`, the process would look like this:
 
    ```js
    import { createRollupPrepareTransactionRequest } from '@arbitrum/orbit-sdk';
