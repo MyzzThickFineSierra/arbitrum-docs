@@ -8,24 +8,26 @@ target_audience: 'Developers deploying and maintaining Orbit chains.'
 sidebar_position: 1
 ---
 
-This section explains how to initiate a <a data-quicklook-from="arbitrum-rollup-chain">`Rollup Orbit`</a> chain step by step.
+This section explains how to leverage the Orbit SDK methods to deploy a <a data-quicklook-from="arbitrum-rollup-chain">`Rollup Orbit chain`</a>:
 
 ###### For those who prefer diving directly into coding without an extensive tutorial, we recommend exploring the "create-rollup-eth"  [example]( https://github.com/OffchainLabs/arbitrum-orbit-sdk/blob/main/examples/create-rollup-eth/index.ts) 
 
-Orbit chains need a set of core Smart-Contract on their parent chains:
+The main benefit of the Orbit SDK is that it facilitates the deployment and fine-tuning of Orbit chains core Smart-Contracts. 
+
+These contracts are deployed on parent chains, they are:
+
 - <a data-quicklook-from="bridge">Bridge contracts</a>
 - Rollup contracts
 - Contracts handling <a data-quicklook-from="fraud-proof">fraud proofs</a> 
 
-These contracts are the backbone of the Arbitrum <a data-quicklook-from="arbitrum-nitro">Nitro stack</a>, ensuring its robust and efficient operation. You can explore these contracts in detail in the [nitro-contracts](https://github.com/OffchainLabs/nitro-contracts) GitHub repository. 
+Core contracts are the backbone of Arbitrum's <a data-quicklook-from="arbitrum-nitro">Nitro stack</a>, ensuring its robust and efficient operation. You explore their code in the [nitro-contracts GitHub repository](https://github.com/OffchainLabs/nitro-contracts). 
 
-The main benefit of the Orbit SDK is that it helps you deploy and fine-tune these contracts for optimal performance and functionality. 
 
 To streamline the deployment process and make it more efficient, we've developed a key contract called [`RollupCreator` contract](https://github.com/OffchainLabs/nitro-contracts/blob/main/src/rollup/RollupCreator.sol). This contract has two primary functions:
 
-1. [setTemplates](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L63C14-L63C26):lets you specify which versions of core contract should be deployed and ensures your Orbit chain runs their latest, most efficient updates.
+1. [setTemplates](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L63C14-L63C26): specifies which versions of core contract should be deployed and ensures your Orbit chain runs the latest, most efficient contracts versions.
 
-2. [`createRollup`](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L107) deploys a new set of core contracts for each Orbit chain instance. It uses the templates you set with `setTemplates` so that you can customize each deployment.
+2. [createRollup](https://github.com/OffchainLabs/nitro-contracts/blob/acb0ef919cce9f41da531f8dab1b0b31d9860dcb/src/rollup/RollupCreator.sol#L107): deploys a new set of core contracts for each Orbit chain instance. It uses the templates you set with `setTemplates` so that you can customize each deployment.
 
 These functionalities within the `RollupCreator` provide with a smoother and more user-friendly experience. 
 
@@ -167,9 +169,9 @@ In this section, we'll provide detailed explanations of the various chain config
 
 5. **stakeToken and baseStake**: Every Orbit chain requires at least one validator node. To post state assertions on the base chain, validators must stake a certain amount to incentivize honest participation. The base stake parameter specifies the quantity of stake token (either ETH or an ERC-20 token) required for validators to post state assertions of your Orbit chain on the base chain's rollup contracts.
 
-6. **`owner`**: This is the account address responsible for deploying, owning, and managing your Orbit chain's base contracts on its parent chain.
+6. **owner**: This is the account address responsible for deploying, owning, and managing your Orbit chain's base contracts on its parent chain.
 
-7 j. **chainId**: This parameter sets the unique chain ID for your Orbit chain 
+7.  **chainId**: This parameter sets the unique chain ID for your Orbit chain 
 
 :::note
 
